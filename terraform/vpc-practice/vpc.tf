@@ -54,6 +54,14 @@ resource "aws_nat_gateway" "nat_gw" {
   }
 }
 
+resource "aws_route_table" "route_table_public" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "terraform-syungg-public-rt"
+  }
+}
+
 resource "aws_route_table" "route_table_private" {
   vpc_id = aws_vpc.main.id
 
@@ -62,9 +70,20 @@ resource "aws_route_table" "route_table_private" {
   }
 }
 
+resource "aws_route_table_association" "route_table_association_public" {
+  subnet_id = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
 resource "aws_route_table_association" "route_table_association_private" {
   subnet_id = aws_subnet.private_subnet.id
   route_table_id = aws_route_table.route_table_private.id
+}
+
+resource "aws_route" "public_route_rule" {
+  route_table_id = aws_route_table.route_table_public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.igw.id
 }
 
 resource "aws_route" "private_nat_route_rule" {
