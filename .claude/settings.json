@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'git commit'; then echo '{\"additionalContext\": \"커밋이 완료되었습니다. README.md를 최신 프로젝트 상태에 맞게 업데이트해주세요.\"}'; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
