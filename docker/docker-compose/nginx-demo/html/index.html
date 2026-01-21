@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nginx Demo</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Nginx + Docker Compose Demo</h1>
+    <p>Serving static HTML & CSS from a mounted volume</p>
+  </header>
+  <main>
+    <p>This is a simple demo page served by Nginx in a Docker container.</p>
+    <button id="time">Show client time</button>
+    <div id="result"></div>
+  </main>
+  <script>
+    document.getElementById('time').addEventListener('click', () => {
+      document.getElementById('result').textContent = new Date().toLocaleString();
+    });
+  </script>
+</body>
+</html>
