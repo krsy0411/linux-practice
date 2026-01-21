@@ -16,6 +16,10 @@ Dockerfile 작성 및 멀티스테이지 빌드 실습
 - `dockerfile-basic/nestjs-demo/` - NestJS (Node 18)
 - `dockerfile-basic/nginx-demo/` - Nginx 정적 사이트
 
+Docker Compose 멀티 컨테이너 실습
+- `docker-compose/nestjs-mysql-demo/` - NestJS + MySQL 연동
+- `docker-compose/nginx-demo/` - Nginx 정적 사이트
+
 ### Terraform (AWS)
 AWS 인프라 코드화 실습 (ap-northeast-2 리전)
 - `terraform-basic/` - S3 버킷 생성
