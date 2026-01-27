@@ -1,0 +1,13 @@
+# Ignore editor and OS files
+.DS_Store
+Thumbs.db
+
+# Node/NPM
+node_modules
+npm-debug.log
+
+# build artifacts
+dist
+
+# env
+.env
