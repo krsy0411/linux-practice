@@ -71,3 +71,14 @@ zsdoc/data
 !/tests/_output/.gitkeep
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,zsh
+
+### Terraform ###
+# 로컬 설치 provider 바이너리 (용량 크고 재생성 가능)
+.terraform/
+
+# 의존성 잠금 파일 (로컬 환경 종속)
+.terraform.lock.hcl
+
+# 인프라 상태 파일 (민감 정보 포함, 로컬 관리)
+terraform.tfstate
+terraform.tfstate.backup
