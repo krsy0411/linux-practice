@@ -44,18 +44,25 @@ Basic usage examples with code snippets
 ## Configuration (해당시)
 Configuration options and environment variables
 
-## Project Structure (해당시)
-Brief overview of directory organization
+## 리포지토리 구조
+Brief overview of directory organization.
+Use `###` headings for each top-level section (e.g., Apache, Docker, Linux, Terraform).
+For every section that has documentation files, add a table with columns: 경로 (as a clickable markdown link using relative paths from the repo root) | 설명.
 
 ## API Reference (해당시)
 Link to or brief API documentation
 
 ## Contributing (해당시)
 Contribution guidelines
-
-## License
-License information
 ```
+
+**주의사항 (Root-Level README 작성 규칙):**
+- 목차(Table of Contents) 섹션은 추가하지 않는다
+- `## 라이선스` 또는 `## License` 섹션은 포함하지 않는다
+- `## 리포지토리 구조` 아래의 각 섹션은 `###` 헤딩을 사용한다
+- 문서 파일이 있는 모든 섹션에는 `경로 | 설명` 형식의 표를 추가한다
+- 경로 링크는 저장소 루트 기준 상대 경로를 사용한다
+- 하위 섹션이 여러 개인 경우(예: Docker의 Dockerfile 기초 / Docker Compose) `###` 아래에 **볼드 텍스트**로 소제목을 구분하고 각각 표를 작성한다
 
 ### First-Depth Folder README Structure
 Keep these more focused:
