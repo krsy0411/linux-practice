@@ -79,6 +79,7 @@ Azure에서 Infrastructure as Code 실습 (단계별 학습 구조)
 | `terraform/terraform-with-azure/4-3tier-architecture/` | 3-Tier 아키텍처 구현 및 Variables 활용 |
 | `terraform/terraform-with-azure/5-3tier-service/` | Terraform 파일 기능별 분리 및 실제 애플리케이션 자동 배포 |
 | `terraform/terraform-with-azure/6-vmss-lb/` | VMSS + Load Balancer를 이용한 확장 가능한 인프라 구축 |
+| `terraform/terraform-with-azure/7-https-appgw/` | Application Gateway 기반 HTTPS 3-Tier 아키텍처 (SSL/TLS 종단, WAF, NAT Gateway, MySQL) |
 
 ---
 
