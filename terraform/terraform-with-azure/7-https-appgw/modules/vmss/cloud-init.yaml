@@ -1,0 +1,98 @@
+#cloud-config
+# ============================================================================
+# Cloud-init 설정: VM 초기화 스크립트
+# ============================================================================
+# 이 파일은 VM이 처음 생성될 때 자동으로 실행됩니다.
+# - 패키지 설치
+# - 파일 생성
+# - 서비스 시작
+# ============================================================================
+
+# 패키지 업데이트
+package_update: true
+package_upgrade: true
+
+# 설치할 패키지 목록
+packages:
+  - nginx
+  - curl
+
+# 파일 생성
+write_files:
+  # Nginx 기본 페이지
+  - path: /var/www/html/index.html
+    owner: root:root
+    permissions: '0644'
+    content: |
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <title>${hostname}</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  max-width: 800px;
+                  margin: 50px auto;
+                  padding: 20px;
+                  background-color: #f5f5f5;
+              }
+              .container {
+                  background-color: white;
+                  padding: 30px;
+                  border-radius: 10px;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+              }
+              h1 {
+                  color: #0078d4;
+              }
+              .info {
+                  background-color: #e7f3ff;
+                  padding: 15px;
+                  border-left: 4px solid #0078d4;
+                  margin: 20px 0;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h1>🚀 Azure VMSS with Application Gateway</h1>
+              <div class="info">
+                  <p><strong>Hostname:</strong> <span id="hostname">Loading...</span></p>
+                  <p><strong>Private IP:</strong> <span id="private-ip">Loading...</span></p>
+                  <p><strong>Timestamp:</strong> <span id="timestamp"></span></p>
+              </div>
+              <p>이 페이지는 <strong>${hostname}</strong>에서 제공됩니다.</p>
+              <p>Application Gateway를 통해 HTTPS로 접속하셨습니다.</p>
+          </div>
+          <script>
+              document.getElementById('hostname').textContent = window.location.hostname;
+              document.getElementById('timestamp').textContent = new Date().toLocaleString();
+              fetch('/api/info')
+                  .then(response => response.text())
+                  .catch(() => document.getElementById('private-ip').textContent = 'N/A');
+          </script>
+      </body>
+      </html>
+
+  # Health Check 엔드포인트
+  - path: /var/www/html/health
+    owner: root:root
+    permissions: '0644'
+    content: |
+      OK
+
+# 실행할 명령어
+runcmd:
+  # 패키지 설치 (재시도 로직 포함)
+  - [ bash, -lc, "export DEBIAN_FRONTEND=noninteractive; apt-get update -y >> /var/log/cc_bootstrap.log 2>&1 || true" ]
+  - [ bash, -lc, "export DEBIAN_FRONTEND=noninteractive; (apt-get install -y nginx curl >> /var/log/cc_bootstrap.log 2>&1) || (sleep 10 && apt-get install -y nginx curl >> /var/log/cc_bootstrap.log 2>&1) || true" ]
+
+  # Nginx 설정
+  - [ bash, -lc, "systemctl enable nginx >> /var/log/cc_bootstrap.log 2>&1 || true" ]
+  - [ bash, -lc, "systemctl start nginx >> /var/log/cc_bootstrap.log 2>&1 || (sleep 5 && systemctl start nginx >> /var/log/cc_bootstrap.log 2>&1) || true" ]
+
+  # 완료 로그
+  - [ bash, -lc, "echo \"[$(date -u +%Y-%m-%dT%H:%M:%SZ)] cloud-init finished successfully\" >> /var/log/cc_bootstrap.log" ]
+
+# 최종 메시지
+final_message: "Cloud-init completed after $UPTIME seconds"

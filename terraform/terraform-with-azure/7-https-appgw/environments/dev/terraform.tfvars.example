@@ -1,0 +1,81 @@
+# ============================================================================
+# Terraform Variables Example
+# ============================================================================
+# 이 파일을 terraform.tfvars로 복사하고 실제 값으로 수정하세요.
+# terraform.tfvars는 .gitignore에 추가되어 있습니다.
+# ============================================================================
+
+# ============================================================================
+# 기본 설정
+# ============================================================================
+resource_group_name = "dev-rg"
+location            = "Korea Central"
+
+# ============================================================================
+# Network 설정
+# ============================================================================
+vnet_name         = "dev-vnet"
+vnet_cidr         = "10.10.0.0/16"
+appgw_subnet_cidr = "10.10.0.0/27"   # Application Gateway용 (32 IPs)
+app_subnet_cidr   = "10.10.1.0/24"   # VMSS용 (256 IPs)
+db_subnet_cidr    = "10.10.2.0/24"   # Database용 (256 IPs)
+
+# ============================================================================
+# Application Gateway 설정
+# ============================================================================
+appgw_name        = "dev-appgw"
+domain_name_label = "myapp-dev"  # 선택사항: myapp-dev.koreacentral.cloudapp.azure.com
+
+# SKU: Standard_v2 (기본) 또는 WAF_v2 (Web Application Firewall 포함)
+appgw_sku_name = "Standard_v2"
+appgw_sku_tier = "Standard_v2"
+appgw_capacity = 2
+
+# Auto Scaling (선택사항)
+appgw_enable_autoscale      = false
+appgw_autoscale_min_capacity = 2
+appgw_autoscale_max_capacity = 10
+
+# SSL 인증서
+# Self-signed 인증서 생성 방법:
+#   openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+#   openssl pkcs12 -export -out certificate.pfx -inkey key.pem -in cert.pem
+#   cat certificate.pfx | base64 | tr -d '\n'
+ssl_certificate_data     = "BASE64_ENCODED_PFX_DATA_HERE"
+ssl_certificate_password = "YOUR_PFX_PASSWORD_HERE"
+ssl_policy_name          = "AppGwSslPolicy20220101"
+
+# WAF 설정 (WAF_v2 SKU인 경우에만)
+waf_mode = "Prevention"  # Detection 또는 Prevention
+
+# ============================================================================
+# VMSS 설정
+# ============================================================================
+vmss_name          = "dev-vmss"
+vmss_vm_sku        = "Standard_B1s"  # Standard_B1s, Standard_B2s, Standard_D2s_v3
+vmss_admin_username = "azureuser"
+vmss_admin_password = "YourSecurePassword123!"  # 실무에서는 SSH 키 사용 권장
+
+# Auto Scaling
+vmss_initial_instance_count  = 2
+vmss_min_instance_count      = 2
+vmss_max_instance_count      = 5
+vmss_scale_out_cpu_threshold = 70
+vmss_scale_in_cpu_threshold  = 30
+
+# ============================================================================
+# Database 설정
+# ============================================================================
+mysql_server_name   = "dev-mysql-server-unique123"  # Azure 전체에서 고유해야 함
+mysql_admin_username = "mysqladmin"
+mysql_admin_password = "YourSecureMySQLPassword123!"
+mysql_database_name  = "appdb"
+
+# SKU: B_Standard_B1ms (개발/테스트) 또는 GP_Standard_D2ds_v4 (프로덕션)
+mysql_sku_name       = "B_Standard_B1ms"
+mysql_storage_size_gb = 20
+
+# 백업 및 고가용성
+mysql_backup_retention_days        = 7
+mysql_geo_redundant_backup_enabled = false  # true 시 비용 증가
+mysql_enable_high_availability     = false  # true 시 비용 2배
